@@ -1,4 +1,4 @@
-#!/home/wbin/PythonProject/MyBlog/bin/python2
+#!/home/wbin/PythonProject/MyBlog/venv/bin/python2
 
 # -*- coding: utf-8 -*-
 import re

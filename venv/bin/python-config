@@ -1,4 +1,4 @@
-#!/home/wbin/PythonProject/MyBlog/bin/python
+#!/home/wbin/PythonProject/MyBlog/venv/bin/python
 
 import sys
 import getopt
