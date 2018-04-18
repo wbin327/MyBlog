@@ -1,0 +1,277 @@
+<html>
+<head>
+    {{ pagedown.include_pagedown() }}
+    <meta charset="utf-8">
+    <title>编写博客</title>
+
+    <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/static/toastr/toastr.min.css">
+
+    <style>
+        .title-box{
+            //height: 50px;
+            width: 100%;
+            //background-color: #000;
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 25px;
+        }
+        .tags{
+            width: 100%;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .content{
+            height: 80%;
+            width: 100%;
+            //background-color: #000;
+        }
+        .preview{
+            height: 100%;
+            background-color:#F1F1F1;
+            overflow:scroll;
+            overflow-x:hidden;
+            margin-right: 5px;
+        }
+        .text_box{
+            padding-left:  5px;
+        }
+        .toolbar-box{
+            height: 40px;
+            width: 100%;
+            //margin-bottom: -14px;
+        }
+        .tool{
+            background-color:#D9534F;
+            margin-left: 20px;
+            margin-right: 20px;
+            height: 100%;
+            padding: 5px 5px;
+
+        }
+        .tool_button{
+            margin:5px 5px;
+        }
+        input.error { border: 1px solid red; }
+        .error{
+            color:red;
+        }
+
+    </style>
+
+</head>
+<body>
+
+
+        <form method="post" class="form-horizontal" role="form" id="blogForm">
+            <!-- form.hidden_tag() 模板参数将被替换为一个隐藏字段，用来是实现在配置中激活的 CSRF 保护。 -->
+            {{form.hidden_tag()}}
+            <div class="title-box">
+                <div class="form-group">
+                    <div class="col-lg-1 col-md-2 col-xs-2 type">
+
+                        {{ form.type(id="type", class="form-control" )}}
+                    </div>
+
+                    <div class="col-lg-10 col-md-8 col-xs-8">
+                        <label id = 'error_title' class="error" hidden></label>
+                        {{ form.title(id="title", class="form-control title", placeholder="博客标题" )}}
+                    </div>
+
+                    <div class="col-lg-1 col-md-2  col-xs-2">
+                        <button type="button" class="form-control btn btn-danger" data-toggle="modal" data-target="#upload_blog_modal" onclick="">
+                            提交博客
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tags">
+                <div class="form-group">
+
+                    <div class="col-lg-6 col-md-6 col-xs-6">
+                        {{ form.category(class="form-control") }}
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-xs-6">
+                        <label id = 'error_tags' class="error" hidden></label>
+                        {{ form.tags(id="tags", class="form-control", placeholder="博客标签,多个标签请用逗号间隔") }}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="toolbar-box">
+
+                    <div class="tool">
+
+                                <input type="file" name="file" id="file" onchange="fileUpload()" style="display:none">
+                                <button type="button" class="btn btn-danger btn-default" onclick="select_file()">
+                                    <span class="glyphicon glyphicon-picture">截图</span>
+                                </button>
+
+                                <button type="button" class="btn btn-danger btn-default">
+                                    <span class="glyphicon glyphicon-save" >保存到本地</span>
+                                </button>
+
+                                 <button type="button" class="btn btn-danger btn-default">
+                                    <a href="http://wowubuntu.com/markdown/basic.html" target="_Blank" style="color:#fff">
+                                        <span class="glyphicon glyphicon-link" >MarkDown语法</span>
+                                    </a>
+                                </button>
+
+                    </div>
+
+            </div>
+
+            <div class="content">
+
+                <div class="col-lg-6 col-md-6 col-xs-6 ">
+                    <div class="text_box">
+                        {{ form.content(only_input=True, style="height:100%;width:100%;overflow:scroll;overflow-x:hidden;") }}
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-xs-6">
+                    <div class="preview">
+                        {{ form.content(only_preview=True) }}
+                    </div>
+                </div>
+
+            </div>
+
+            {# 确认提交模态框 #}
+            <div id="upload_blog_modal" class="modal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4>请输入该博客简介</h4>
+                        </div>
+                        <div class="modal-body overflow-visible col-lg-12 col-xs-12" >
+                            <label id = 'error_introduce' class="error" hidden></label>
+                            {{ form.introduce(id="introduce", rows=5, style="width:100%;", placeholder="# 最多输入100个字符") }}
+                        </div>
+
+                        <div class="modal-footer">
+                            {{ form.submit(class="form-control btn btn-danger") }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    <script src="/static/jquery-3.2.1.min.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <script src="/static/toastr/toastr.min.js"></script>
+    <!-- validate -->
+    <script src="/static/jquery-validation-1.17.0/dist/jquery.validate.min.js"></script>
+    <script src="/static/jquery-validation-1.17.0/dist/localization/messages_zh.js"></script>
+
+    <script>
+        //设置toastr插件
+        toastr.options = {
+            positionClass: "toast-bottom-full-width",
+        };
+
+        function addText(data){
+            var text = $("#testArea").val();
+            $("#testArea").val(text + '![alt text]' + '(' + data + ')');
+        }
+
+        function select_file(){
+            $("#file").trigger("click");
+        }
+
+        function fileUpload(){
+            var formData = new FormData();
+            //console.log(formData);
+            formData.append('file', $('#file')[0].files[0]);
+            //console.log(formData);
+            $.ajax({
+                url : "/blog/upload_image",//这里写你的url
+                type : 'POST',
+                data : formData,
+                contentType: false,// 当有文件要上传时，此项是必须的，否则后台无法识别文件流的起始位置
+                processData: false,// 是否序列化data属性，默认true(注意：false时type必须是post)
+                dataType: 'json',//这里是返回类型，一般是JOSN,TEXT由于插件的原因，必须要大小，否则获取不到返回的数据
+                clearForm: true,//提交后是否清空
+                success: function(data) {   //提交成功后自动执行的处理函数，参数data就是服务器返回的数据。
+                    if(data.status){
+                        toastr.success(data.msg);
+                        //console.log(data);
+                        var text = $("#flask-pagedown-content").val();
+                        console.log(text);
+                        $("#flask-pagedown-content").val(text + '\n\n' + '![alt text]' + '(' + data.data + ')');
+                    }else{
+                        toastr.error('服务器错误，请联系管理员');
+                    }
+                },
+                error: function(data, status, e) {  //提交失败自动执行的处理函数。
+                    toastr.error('请求失败，请确认网络是否正常');
+                    console.error(e);
+                }
+            });
+        }
+
+         //在键盘按下并释放及提交后验证表单
+         $().ready(function() {
+
+            $("#blogForm").validate({
+                 rules:{
+                    title: {
+                        required:true,
+                        maxlength: 20,
+                        minlength: 2,
+                    },
+                    tags:{
+                        required:true,
+                        maxlength: 25,
+                        minlength: 2,
+                    },
+                    introduce:{
+                        required:true,
+                        maxlength: 200,
+                        minlength: 5,
+                    }
+                 },
+                 messages:{
+                    title:{
+                        required: "请输入博客标题！",
+                        minlength: "博客标题不能少于两个字符",
+                        maxlength: "博客标题不能超过二十个字符",
+                    },
+                    tags:{
+                        required: "请输入博客标签！",
+                        minlength: "博客标签不能少于两个字符",
+                        maxlength: "博客标签不能大于二十五个字符",
+                    },
+                    introduce:{
+                        required: "请输入博客简介！",
+                        minlength: "博客简介不能少于五个字符",
+                        maxlength: "博客简介不能大于两百个字符",
+                    },
+                 },
+                 submitHandler:function(form) {
+                    form.submit();
+                 }
+             });
+         })
+    </script>
+
+
+    {% if json %}
+        {% if json['status'] %}
+            <script>
+                toastr.success("{{ json['msg'] }}");
+            </script>
+        {% else %}
+            <script>
+                toastr.error("{{ json['msg'] }}");
+            </script>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>

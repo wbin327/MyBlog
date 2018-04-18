@@ -1,0 +1,264 @@
+
+
+<!-- content header -->
+<section class="content-header">
+    <h1>
+        博客头部导航栏管理
+        <small>博客的最顶级类</small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content">
+   <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">博客头部导航栏</h3>
+                    <div class="box-footer pull-right">
+                             <a  href="" data-toggle="modal" data-target="#addHeader"><font color="#3C8DBC">新增头部导航栏</font></a>
+                     </div>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>操作</th>
+                        </tr>
+
+
+                        {# 博客头部栏目表格 #}
+                        {% for header in header_list %}
+                        <tr>
+                                <td>{{ header.id }}</td>
+                                <td>{{ header.name }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editHeader" onclick="edit({{ header.id }}, '{{ header.name}}')">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteHeader" onclick="deleteHeader({{ header.id }}, '{{ header.name }}')">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </td>
+                        </tr>
+                        {% endfor %}
+
+
+
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+{# 新增头部栏目模态框 #}
+<div id="addHeader" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>新增头部栏目</h4>
+			</div>
+			<form action="javascript:void(0)" id="addHeaderForm"
+				name="editHeaderForm" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>新增栏目名：</label> <input id="addHeaderName"
+							type="text"
+							class="form-control col-xs-4" value="" />
+							<span style="color:red; "></span>
+					</div>
+				</div>
+				<div class="col-xs-2"></div>
+			</div>
+
+
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary"  id="addHeaderButton" onclick="addHeader()">
+                        <i class="icon-ok"></i>添加
+                    </button>
+                </div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+{# 编辑头部栏目模态框 #}
+<div id="editHeader" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>编辑头部栏目</h4>
+			</div>
+			<form action="javascript:void(0)" id="editHeaderForm"
+				name="editHeaderForm" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>编辑栏目名：</label>  <input id="editHeaderName"
+							type="text"
+							class="form-control col-xs-4" value="" />
+							<span style="color:red; "></span>
+						<input id="editHeaderID" type="text" hidden>
+					</div>
+				</div>
+				<div class="col-xs-2"></div>
+			</div>
+
+
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary"  id="editCourse" onclick="updateHeader()">
+                        <i class="icon-ok"></i>保存
+                    </button>
+                </div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{# 确认删除模态框 #}
+<div id="deleteHeader" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>将要删除的栏目</h4>
+			</div>
+			<form action="javascript:void(0)" id="deleteHeaderForm"
+				name="editCourseFrom" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>栏目ID：</label><input id="deleteHeaderID" name="editcourseID"
+							type="text"
+							class="form-control col-xs-4" value="" readonly="readonly"/>
+							<span style="color:red; "></span>
+					</div>
+					<div class="form-group">
+						<label>栏目名称：</label> <input id="deleteHeaderName" name="deleteHeaderName"
+						type="text"
+							class="form-control col-xs-4" value="" readonly="readonly"/>
+							<span style="color:red; "></span>
+					</div>
+				</div>
+				<div class="col-xs-2"></div>
+
+
+			</div>
+			<div class="modal-footer">
+
+				<button class="btn btn-sm btn-danger"  id="deleteHeaderButton" onclick="sureDelete()">
+					<i class="icon-ok"></i>确认删除
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+    function edit(id, name){
+    	$("#editHeaderID").val(id);
+        $("#editHeaderName").val(name);
+    }
+
+    function deleteHeader(id, name){
+        $("#deleteHeaderID").val(id);
+        $("#deleteHeaderName").val(name);
+    }
+
+    function sureDelete(){
+        header_id = $("#deleteHeaderID").val();
+
+        $.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/blog/background/delete_blog_header",
+		         data : {
+		         	"header_id" : header_id,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.data);
+		         	    $('#deleteHeader').modal('hide');
+		         	    toMain('/blog/background/blog_header');
+		         	}else{
+		         	   toastr.error(data.data);
+		         	   $('#deleteHeader').modal('hide');
+		         	}
+			    },
+		   });
+    }
+
+    function addHeader(){
+        header_name = $("#addHeaderName").val();
+
+        $.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/blog/background/add_blog_header",
+		         data : {
+		         	"header_name" : header_name,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.data);
+		         	    $('#addHeader').modal('hide');
+		         	    toMain('/blog/background/blog_header');
+		         	}else{
+		         	   toastr.error(data.data);
+		         	   $('#addHeader').modal('hide');
+		         	}
+			    },
+		 });
+    }
+
+    function updateHeader(){
+    	header_id = $("#editHeaderID").val();
+    	header_name = $("#editHeaderName").val();
+
+    	$.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/blog/background/update_blog_header",
+		         data : {
+		         	"header_id" : header_id,
+		         	"header_name" : header_name,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.data);
+		         	    $('#editHeader').modal('hide');
+		         	    toMain('/blog/background/blog_header');
+
+		         	}else{
+		         		$('#editHeader').modal('hide');
+		         	   toastr.error(data.data);
+
+		         	}
+			    },
+		 });
+    }
+
+
+
+
+</script>

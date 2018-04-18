@@ -1,0 +1,289 @@
+
+
+<!-- content header -->
+<section class="content-header">
+    <h1>
+        博客左侧导航栏管理
+        <small>博客的左侧导航栏</small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content">
+   <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">博客左侧导航栏</h3>
+                    <div class="box-footer pull-right">
+                             <a  href="" data-toggle="modal" data-target="#addSidebarModel"><font color="#3C8DBC">新增左侧导航栏</font></a>
+                     </div>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>所属栏目</th>
+                            <th>操作</th>
+                        </tr>
+
+
+                        {# 博客头部栏目表格 #}
+                        {% for category in sidebar_list %}
+                        <tr>
+                                <td>{{ category.id }}</td>
+                                <td>{{ category.name }}</td>
+                                <td>{{ category.father_name }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#updateSidebarModel" onclick="update_sidebar({{ category.id }}, '{{ category.name}}')">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteSidebarModel" onclick="delete_sidebar({{ category.id }}, '{{ category.name }}', '{{ category.father_name }}')">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </td>
+                        </tr>
+                        {% endfor %}
+
+
+
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+{# 新增左侧栏目模态框 #}
+<div id="addSidebarModel" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>新增左侧栏目</h4>
+			</div>
+			<form action="javascript:void(0)"
+				name="editCourseFrom" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>新增左侧栏目名：</label>
+                        <input id="addSidebarName" name="addSidebarName"
+							type="text"
+							class="form-control col-xs-4" value="" />
+							<span style="color:red; "></span>
+					</div>
+					<div class="form-group">
+						<label>所属栏目名：</label>
+                        <select id="selectFatherName" class="form-control col-xs-4">
+                            {% for father in father_list %}
+                                <option value="{{ father.id }}">{{ father.name }}</option>
+                            {% endfor %}
+                        </select>
+							<span style="color:red; "></span>
+					</div>
+				</div>
+				<div class="col-xs-2"></div>
+
+
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-primary"  id="addSidebarButton" onclick="addSidebar()">
+					<i class="icon-ok"></i>添加
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{# 编辑左侧栏目模态框 #}
+<div id="updateSidebarModel" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>编辑左侧栏目</h4>
+			</div>
+			<form action="javascript:void(0)"
+				name="editCourseFrom" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>编辑左侧栏目名：</label>
+                        <input id="updateSidebarID" hidden>
+                        <input id="updateSidebarName" name="updateSidebarName"
+							type="text"
+							class="form-control col-xs-4" value="" />
+							<span style="color:red; "></span>
+					</div>
+					<div class="form-group">
+						<label>所属栏目名：</label>
+                        <select id="updateFatherName" class="form-control col-xs-4">
+                            {% for father in father_list %}
+                                <option value="{{ father.id }}">{{ father.name }}</option>
+                            {% endfor %}
+                        </select>
+							<span style="color:red; "></span>
+					</div>
+				</div>
+				<div class="col-xs-2"></div>
+
+
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-primary"  id="updateSidebarButton" onclick="updateSidebar()">
+					<i class="icon-ok"></i>保存
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{# 删除左侧栏目模态框 #}
+<div id="deleteSidebarModel" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>删除左侧栏目</h4>
+			</div>
+			<form action="javascript:void(0)"
+				name="editCourseFrom" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>删除左侧栏目名：</label>
+                        <input id="deleteSidebarID" hidden>
+                        <input id="deleteSidebarName" name="updateSidebarName"
+							type="text"
+							class="form-control col-xs-4" value="" readonly="readonly"/>
+							<span style="color:red; "></span>
+					</div>
+					<div class="form-group">
+						<label>所属栏目名：</label>
+                        <input id="deleteFatherName" name="deleteFatherName"
+							type="text"
+							class="form-control col-xs-4" value="" readonly="readonly"/>
+							<span style="color:red; "></span>
+					</div>
+				</div>
+				<div class="col-xs-2"></div>
+
+
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-sm btn-primary"  id="deleteSidebarButton" onclick="deleteSidebar()">
+					<i class="icon-ok"></i>确认删除
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+    function addSidebar(){
+        name = $("#addSidebarName").val();
+        father_id = $("#selectFatherName").val();
+        father_name = $("#selectFatherName option:selected").text();
+        //alert(father_name);
+
+        $.ajax({
+            type : "post",
+            dataType: "json",
+            url : "/blog/background/add_sidebar",
+            data : {
+                "name" : name,
+                "father_id" : father_id,
+                "father_name" : father_name,
+            },
+            async : false,  //同步处理
+            success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+                if(data.status){
+                    toastr.success(data.data);
+                    $('#addSidebarModel').modal('hide');
+                    toMain('/blog/background/blog_sidebar');
+                }else{
+                    $('#addSidebarModel').modal('hide');
+                   toastr.error(data.data);
+                }
+            }
+		 });
+    }
+
+    function update_sidebar(id, name){
+        $("#updateSidebarName").val(name);
+        $("#updateSidebarID").val(id);
+    }
+
+    function updateSidebar(){
+        id = $("#updateSidebarID").val();
+        name = $("#updateSidebarName").val();
+        father_id = $("#updateFatherName").val();
+        father_name = $("#updateFatherName option:selected").text();
+        //alert(father_name);
+
+        $.ajax({
+            type : "post",
+            dataType: "json",
+            url : "/blog/background/update_sidebar",
+            data : {
+                "id" : id,
+                "name" : name,
+                "father_id" : father_id,
+                "father_name" : father_name,
+            },
+            async : false,  //同步处理
+            success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+                if(data.status){
+                    toastr.success(data.data);
+                    $('#updateSidebarModel').modal('hide');
+                    toMain('/blog/background/blog_sidebar');
+                }else{
+                    $('#updateSidebarModel').modal('hide');
+                   toastr.error(data.data);
+                }
+            }
+         });
+    }
+
+    function delete_sidebar(id, name, father_name){
+        $("#deleteSidebarID").val(id);
+        $("#deleteSidebarName").val(name);
+        $("#deleteFatherName").val(father_name);
+    }
+
+    function deleteSidebar(){
+        id = $("#deleteSidebarID").val();
+        //alert(father_name);
+
+        $.ajax({
+            type : "post",
+            dataType: "json",
+            url : "/blog/background/delete_sidebar",
+            data : {
+                "id" : id,
+            },
+            async : false,  //同步处理
+            success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+                if(data.status){
+                    toastr.success(data.data);
+                    $('#deleteSidebarModel').modal('hide');
+                    toMain('/blog/background/blog_sidebar');
+                }else{
+                    $('#deleteSidebarModel').modal('hide');
+                    toastr.error(data.data);
+                }
+            }
+         });
+    }
+</script>

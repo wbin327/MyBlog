@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .header{
+            background-color:#C62F2F;
+            color: #FAFAFA;
+        }
+        .content{
+            width:100%;
+            height:1000px;
+            background-size:cover;
+            background-color: #3C3F41;
+        }
+
+        body{
+            heigth:100%;
+            background-color:#F5F6F7;
+        }
+
+        .footer{
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            position:fixed;
+            left:0px;
+            bottom:0px;
+            color: black;
+            background-color: #FFFFFF;
+            border-top:1px solid #E1E1E2;
+        }
+
+        .middle{
+            // background-color:#FAFAFA;
+            margin-top:80px;
+            margin-bottom:80px;
+
+        }
+        .sidebar{
+            border-bottom:1px solid #E1E1E2;
+        }
+        .blog_box{
+            //overflow:hidden;
+            background-color: #FFFFFF;
+            border:1px solid #E1E1E2;
+            width:auto;
+            height:auto;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-bottom: 20px;
+        }
+        .type_box{
+            width: 50px;
+            height: 25px;
+            border:1px solid #E1E1E2;
+            float: left;
+            margin-right: 20px;
+        }
+
+        img{
+            width: 100%;
+            height: auto;
+        }
+
+        .blog_title{
+            margin-bottom: 20px;
+        }
+
+    </style>
+
+</head>
+
+    <!-- header -->
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-fixed-top header">
+
+            <div class="container">
+
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/blog/index"><span style="color:#FAFAFA">wbin的博客</span></a>
+                    </div>
+
+                    <div>
+                        <ul class="nav navbar-nav navbar-right">
+
+                            {% for header in father_list %}
+                                <li ><a  href="/blog/get_blog?header={{ header.name }}">{{ header.name }}</a>  </li>
+                            {% endfor %}
+
+                            <li><a href="/blog/to_write_blog"><span>编写博客</span></a></li>
+                            {% if current_user.is_authenticated %}
+                            <li><a href="/blog/logout"><span>退出登录</span></a></li>
+                            {% else %}
+                            <li><a href="/blog/login"><span>登录</span></a></li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- middle -->
+    <div class="container middle">
+       <div class="row">
+
+            <div class="col-lg-1 col-xs-1">
+                
+            </div>
+
+
+
+           <div class="col-lg-10 col-xs-9" id="blog_box">
+               <div class="blog_box">
+
+                   <div class="blog_title">
+
+                       <h2>{{ article.title }}</h2>
+                       <a  href="/blog/edit_blog/{{ article.id }}" >
+                           <span style="color:#bbb;font-size:15px;position:absolute;right:30px;top:20px;"
+                           onmousemove="mouseIn(this)" onmouseout="mouseOut2(this)">编辑博客</span>
+                       </a>
+
+                   </div>
+
+                   <div class="type_box" align="center">
+                       <span>{{ article.type }}</span>
+                   </div>
+                   <span style="color:#bbb;margin-right:20px;">{{ article.publish_time }}</span>
+                   <span style="color:#bbb">标签：{{ article.tags }}</span>
+
+                   <div class="read_count" style="float:right;color:#bbb;">
+                       <span class="glyphicon glyphicon-eye-open"  ></span>
+                       <span style="margin-left:7px;" id="read_count">{{ article.read_count }}</span>
+                   </div>
+                   <hr/>
+
+                   <div class="blog_content">
+                       {{ article.body_html| safe }}
+                   </div>
+
+               </div>
+           </div>
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+    <!-- footer -->
+    <div class="footer">
+        <div class="container">
+                <a href="javascript:void(0);"><span class="glyphicon glyphicon-envelope" id="call_me" style="color:#5C5C5C" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)"> 联系我：wbin327@foxmail.com</span></a>
+        </div>
+    </div>
+
+
+
+    <script src="/static/jquery-3.2.1.min.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+<script>
+
+    function mouseIn(obj){
+        var test = obj;
+        $(test).css("color", "#333333");
+    }
+    function mouseOut(obj){
+        var test = obj;
+        $(test).css("color", "#5C5C5C");
+    }
+    function mouseOut2(obj){
+        var test = obj;
+        $(test).css("color", "#bbb");
+    }
+
+</script>
+</body>
+</html>

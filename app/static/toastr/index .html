@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>toastr 简单实例</title>
+<link href="toastr.css" rel="stylesheet" type="text/css" />
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script src="toastr.js"></script>
+<script>
+$(function(){
+	
+	toastr.options = {
+		"closeButton": false,
+		"debug": false,
+		"positionClass": "toast-top-full-width",
+		"showDuration": "300",
+		"hideDuration": "1000",
+		"timeOut": "5000",
+		"extendedTimeOut": "1000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
+		};
+
+		$("#success").click(function(){
+		toastr.success("祝贺你成功了");
+		})
+		
+		$("#info").click(function(){
+		toastr.info("这是一个提示信息");
+		})
+		
+		$("#warning").click(function(){
+		toastr.warning("警告你别来烦我了");
+		})
+		
+		$("#error").click(function(){
+		toastr.error("出现错误，请更改");
+		})
+		
+		$("#clear").click(function(){
+		toastr.clear();
+		})
+	})
+	
+</script>
+</head>
+<body>
+<div style="margin:200px; width:600px; height:80px; padding:30px;">
+<input type="button" name="success" id="success" value="成功"/>
+<input type="button" name="info" id="info" value="提示"/>
+<input type="button" name="warning" id="warning" value="警告"/>
+<input type="button" name="error" id="error" value="错误"/>
+<input type="button" name="clear" id="clear" value="清除"/>
+<P><a href="demo.html">定制实例页面</a></P>
+<p>代码整理<a href="http://www.jqcool.net">jQ酷</a></p>
+</div>
+</body>
+</html>

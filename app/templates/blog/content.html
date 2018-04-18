@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>wbin的博客</title>
+    <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+
+        <style>
+        .header{
+            background-color:#860508;
+        }
+        .content{
+            width:100%;
+            height:1000px;
+            background-size:cover;
+            background-color: #3C3F41;
+        }
+
+        .related_blog{
+            width:100%;
+            height:210px;
+            background-color: #3C3F41;
+            //padding-top: 50px;
+            margin-bottom: 30px;
+            color:#fff;
+        }
+
+        body{
+            heigth:100%;
+            background-color:#000;
+        }
+
+        .footer{
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            background-color:#860508;
+            position:fixed;
+            left:0px;
+            bottom:0px;
+            color: #666;
+        }
+
+        .middle{
+            // background-color:#3C3F41;
+            margin-top:80px;
+            margin-bottom:80px;
+
+        }
+
+        .left_sidebar{
+            border: 1px solid #860508;
+            background-color:#3C3F41;
+            color: #fff;
+        }
+
+
+        .im{
+            background: url("/static/images/2.jpg");
+            height:800px;
+            background-size:100% 100%;
+        }
+
+        a{
+            color:#fff;
+        }
+
+        .blog_title{
+            background-color:#fff;
+
+        }
+
+        h4{
+            margin-top:0px;
+            margin-bottom:0px;
+            padding-top:10px;
+            padding-left:10px;
+        }
+
+        .foot{
+            padding-top:0;
+            width:100%;
+            height:30px;
+            background-color: #ffc0cb;
+        }
+
+        .introduce_box{
+            height:100px;
+            width: 100%;
+            padding-left: 10px;
+            padding-right: 5px;
+        }
+        .introduce{
+            text-indent: 2em;
+        }
+
+
+        .first_line{
+            height: 38px;
+        }
+        .title{
+            float: left;
+            margin-top: 8px;
+            margin-left: 10px;
+            font-size: 20px;
+            font-weight: 900;
+        }
+        .type{
+            float: right;
+            margin-top: 20px;
+            margin-right: 5px;
+            color: #666;
+        }
+        hr{
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .update_time{
+            float: right;
+            margin-right: 5px;
+            color: #666;
+        }
+
+        .page{
+            font-size: 18px;
+             text-align: right;
+        }
+    </style>
+
+</head>
+<body>
+
+
+
+    <!-- header -->
+    <div class="row">
+        <div class="navbar navbar-inverse navbar-fixed-top header">
+
+            <div class="container">
+
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/blog/index">wbin的博客</a>
+                    </div>
+
+                    <dvi>
+                        <ul class="nav navbar-nav navbar-right">
+                            {% for header in father_list %}
+                                <li ><a  href="/blog/get_blog?header={{ header.name }}">{{ header.name }}</a>  </li>
+                            {% endfor %}
+
+                             <li><a href="/blog/to_write_blog">编写博客</a></li>
+
+                            {% if current_user.is_authenticated %}
+                                <li><a href="/blog/logout">退出登录</a></li>
+                            {% else %}
+                                <li><a href="/blog/login">登录</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- middle -->
+    <div class="container middle">
+       <div class="row">
+
+            <div class="col-lg-2 col-xs-2">
+                <ul class="nav nav-tabs  nav-stacked left_sidebar ">
+                    {% for son in son_list %}
+                        <li class="sidebar"><a href="/blog/get_blog?header={{ header }}&sidebar={{ son.name }}" >{{ son.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+           <div class="col-lg-10 col-xs-9" id="blog_list">
+               {% for article in article_list %}
+                    <a href="/blog/read_blog/{{ article.id }}">
+                       <div class="related_blog" >
+
+                           <!-- 第一行 -->
+                           <div class="first_line">
+                               <span class="title">{{ article.title }}</span>
+                               <span class="type" align="right">{{ article.type }}</span>
+                           </div>
+                           <hr/>
+
+                           <!-- 一小段博客 -->
+                           <div class="introduce_box">
+                               <p id="introduce" class="introduce">{{ article.introduce }}</p>
+                           </div>
+                           <hr/>
+
+                           <!-- 底部 -->
+                           <div>
+                               <span class="update_time">{{ article.update_time.strftime("%Y-%m-%d %H:%M:%S") }}</span>
+                           </div>
+                       </div>
+                    </a>
+               {% endfor %}
+
+               <div class="page">
+                   {% if page == 1 and  article_list %}
+                        <a href="/blog/get_blog?header={{ header }}&page=1&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&laquo;</span></a>
+                   {% endif %}
+                   {% if page != 1 and  article_list %}
+                        <a href="/blog/get_blog?header={{ header }}&page={{ page-1 }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&laquo;</span></a>
+                   {% endif %}
+
+                   {% for page in range(start_page, end_page+1) %}
+                        <a href="/blog/get_blog?header={{ header }}&page={{ page }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">{{ page }}</span></a>
+                   {% endfor %}
+
+                   {% if page == end_page and  article_list %}
+                        <a href="/blog/get_blog?header={{ header }}&page={{ end_page }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&raquo;</span></a>
+                   {% endif %}
+                   {% if page != end_page and  article_list %}
+                        <a href="/blog/get_blog?header={{ header }}&page={{ page + 1 }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&raquo;</span></a>
+                   {% endif %}
+
+
+                </div>
+           </div>
+
+
+
+        </div>
+    </div>
+
+
+
+
+    <!-- footer -->
+    <div class="footer">
+        <div class="container">
+                <a href="javascript:void(0);"><span class="glyphicon glyphicon-envelope" id="call_me" style="color:#9d9d9d"> 联系我：wbin327@foxmail.com</span></a>
+        </div>
+    </div>
+
+
+
+    <script src="/static/jquery-3.2.1.min.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+<script>
+    $("#call_me").hover(
+        function (){
+            $("#call_me").css("color", "#FCFDF8");
+        },
+        function(){
+            $("#call_me").css("color", "#9d9d9d");
+        }
+    )
+    function mouseIn(obj){
+        var test = obj;
+        $(test).css("color", "#FCFDF8");
+    }
+    function mouseOut(obj){
+        var test = obj;
+        $(test).css("color", "#9d9d9d");
+    }
+
+    function selectSidebar(sidebar_id){
+        $.ajax({
+            type : "post",
+            dataType: "json",
+            url : "",
+            data : {
+                "sidebar_id" : sidebar_id,
+            },
+            async : false,  //同步处理
+            success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+                if(data.status){
+                    //删除子元素
+                    $("#blog_list").empty();
+                    for (var x in data.data){
+                        alert(x);
+                    }
+                    var text='<div class="related_blog" >'+
+                               '<div class="first_line">'+
+                                   '<span class="title">哈哈</span>'+
+                                   '<span class="type" align="right">哈哈哈</span>'+
+                               '</div>'+
+                               '<hr/>'+
+                               '<div class="introduce_box">'+
+                                   '<p id="introduce" class="introduce">哈哈哈哈</p>'+
+                               '</div>'+
+                               '<hr/>'+
+                               '<div>'+
+                                   '<span class="update_time">哈哈哈哈哈哈</span>'+
+                               '</div>'+
+                           '</div>';
+                    $("#blog_list").html(text);
+                }else{
+                   toastr.error(data.msg);
+                }
+            }
+         });
+    }
+</script>
+
+</body>
+</html>

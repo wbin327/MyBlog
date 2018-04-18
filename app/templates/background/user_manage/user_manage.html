@@ -1,0 +1,284 @@
+
+
+<!-- content header -->
+<section class="content-header">
+    <h1>
+        用户管理
+        <small>博客的最顶级类</small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content">
+   <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">所有用户</h3>
+                    <div class="box-footer pull-right">
+                             <a  href="" data-toggle="modal" data-target="#addUser"><font color="#3C8DBC">新增用户</font></a>
+                     </div>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>操作</th>
+                        </tr>
+
+
+                        {# 博客头部栏目表格 #}
+                        {% for user in user_list %}
+                        <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editUser" onclick="editUser({{ user.id }}, '{{ user.username }}', '{{ user.password}}')">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteUser" onclick="deleteUser({{ user.id }}, '{{ user.username }}')">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </td>
+                        </tr>
+                        {% endfor %}
+
+
+
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+{# 新增用户模态框 #}
+<div id="addUser" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>新增用户</h4>
+			</div>
+			<form action="javascript:void(0)" id="addHeaderForm"
+				name="editHeaderForm" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>用户名：</label> <input id="addUserName"
+							type="text"
+							class="form-control col-xs-4" value="" />
+							<span style="color:red; "></span>
+					</div>
+                    <div class="form-group">
+						<label>密码：</label> <input id="addUserPassword"
+							type="password"
+							class="form-control col-xs-4" value="" />
+							<span style="color:red; "></span>
+					</div>
+				</div>
+				<div class="col-xs-2"></div>
+			</div>
+
+
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary"  id="addUserButton" onclick="addUser()">
+                        <i class="icon-ok"></i>新增
+                    </button>
+                </div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+{# 编辑用户模态框 #}
+<div id="editUser" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>编辑用户</h4>
+			</div>
+			<form action="javascript:void(0)" id="editUserForm"
+				name="editHeaderForm" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>用户名：</label>  <input id="editUserName"
+							type="text"
+							class="form-control col-xs-4" value="" />
+							<span style="color:red; "></span>
+						<input id="editUserID" type="text" hidden>
+					</div>
+                    <div class="form-group">
+                        <label>密码：</label>
+                        <input id="editUserPassword"
+							type="password"
+							class="form-control col-xs-4" value="" />
+                        <span style="color:red; "></span>
+                    </div>
+				</div>
+				<div class="col-xs-2"></div>
+			</div>
+
+
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-primary"  id="updateUserButton" onclick="updateUser()">
+                        <i class="icon-ok"></i>保存
+                    </button>
+                </div>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{# 确认删除模态框 #}
+<div id="deleteUser" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>将要删除的用户</h4>
+			</div>
+			<form action="javascript:void(0)" id="deleteUserForm"
+				name="editCourseFrom" method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>用户ID：</label><input id="deleteUserID" name="deleteUserID"
+							type="text"
+							class="form-control col-xs-4" value="" readonly="readonly"/>
+							<span style="color:red; "></span>
+					</div>
+					<div class="form-group">
+                        <div class="form-group">
+						<label>用户名称：</label> <input id="deleteUserName" name="deleteUserName"
+						type="text"
+							class="form-control col-xs-4" value="" readonly="readonly"/>
+							<span style="color:red; "></span>
+					    </div>
+                    </div>
+				</div>
+				<div class="col-xs-2"></div>
+
+
+			</div>
+			<div class="modal-footer">
+
+				<button class="btn btn-sm btn-danger"  id="deleteUserButton" onclick="sureDelete()">
+					<i class="icon-ok"></i>确认删除
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+    function editUser(id, name, password){
+    	$("#editUserID").val(id);
+        $("#editUserName").val(name);
+        $("#editUserPassword").val(password);
+    }
+
+    function deleteUser(id, name){
+        $("#deleteUserID").val(id);
+        $("#deleteUserName").val(name);
+    }
+
+    function  updateUser(){
+    	user_id = $("#editUserID").val();
+    	user_name = $("#editUserName").val();
+    	user_password = $("#editUserPassword").val();
+
+    	$.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/user/background/update_user",
+		         data : {
+		         	"user_id" : user_id,
+		         	"user_name" : user_name,
+		         	"user_password": user_password,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.msg);
+		         	    $('#editUser').modal('hide');
+		         	    toMain('/user/background/user_manage');
+
+		         	}else{
+		         		$('#editUser').modal('hide');
+		         	   toastr.error(data.msg);
+
+		         	}
+			    },
+		 });
+    }
+
+    function sureDelete(){
+        user_id = $("#deleteUserID").val();
+
+        $.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/user/background/delete_user",
+		         data : {
+		         	"user_id" : user_id,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.msg);
+		         	    $('#deleteUser').modal('hide');
+		         	    toMain('/user/background/user_manage');
+		         	}else{
+		         	   toastr.error(data.msg);
+		         	   $('#deleteUser').modal('hide');
+		         	}
+			    },
+		   });
+    }
+
+    function addUser(){
+        user_name = $("#addUserName").val();
+        user_password = $("#addUserPassword").val();
+
+        $.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/user/background/add_user",
+		         data : {
+		         	"user_name" : user_name,
+		         	"user_password" : user_password,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.msg);
+		         	    $('#addUser').modal('hide');
+		         	    toMain('/user/background/user_manage');
+		         	}else{
+		         	   toastr.error(data.msg);
+		         	   $('#addUser').modal('hide');
+		         	}
+			    },
+		 });
+    }
+
+
+
+
+</script>
