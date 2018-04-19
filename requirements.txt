@@ -14,3 +14,4 @@ Flask_Migrate==2.1.1
 Flask_SQLAlchemy==2.3.2
 Flask_Bootstrap==3.3.7.1
 PyJWT==1.6.1
+MySQL-python==1.2.5
