@@ -103,7 +103,11 @@
     <!-- footer -->
     <div class="footer">
         <div class="container">
-                <a href="javascript:void(0);"><span class="glyphicon glyphicon-envelope" style="color:#fff;"> 联系我：wbin327@foxmail.com</span></a>
+                <a href="javascript:void(0);"><span class="glyphicon glyphicon-envelope" style="color:#bbb;"
+                           onmousemove="mouseIn(this)" onmouseout="mouseOut2(this)"> 联系我：wbin327@foxmail.com</span></a>
+                <span style="padding-right:5px;padding-left:5px;color:#ffffff">·</span>
+                <a href="http://www.miitbeian.gov.cn/"><span style="color:#bbb;"
+                           onmousemove="mouseIn(this)" onmouseout="mouseOut2(this)">粤ICP备18043023号</span></a>
         </div>
     </div>
 
@@ -114,5 +118,19 @@
 
     <script src="/static/jquery-3.2.1.min.js"></script>
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script>
+    function mouseIn(obj){
+        var test = obj;
+        $(test).css("color", "#fff");
+    }
+    function mouseOut(obj){
+        var test = obj;
+        $(test).css("color", "#5C5C5C");
+    }
+    function mouseOut2(obj){
+        var test = obj;
+        $(test).css("color", "#bbb");
+    }
+</script>
 </body>
 </html>
