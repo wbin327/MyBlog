@@ -138,7 +138,9 @@ class Service(object):
         """
         try:
             if file and self.allowed_file(file.filename):
-                path = os.path.join(current_app.config['UPLOAD_FOLDER'], username)
+                if not os.path.isdir(current_app.config['UPLOAD_FOLDER']):
+                    os.mkdir(current_app.config['UPLOAD_FOLDER'])
+                path = os.path.join(current_app.config['UPLOAD_FOLDER'], username)             
                 if os.path.isdir(path):
                     image_path = self.save_image2(path, file, username)
                 else:
