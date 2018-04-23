@@ -200,24 +200,36 @@
                {% endfor %}
 
                <div class="page">
-                   {% if page == 1 and  article_list %}
-                        <a href="/blog/get_blog?header={{ header }}&page=1&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&laquo;</span></a>
-                   {% endif %}
-                   {% if page != 1 and  article_list %}
-                        <a href="/blog/get_blog?header={{ header }}&page={{ page-1 }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&laquo;</span></a>
-                   {% endif %}
+                   {% if end_page != 1 %}
+                       {% if page == 1 and  article_list %}
+                            <a href="/blog/get_blog?header={{ header }}&page=1&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&laquo;</span></a>
+                       {% endif %}
+                       {% if page != 1 and  article_list %}
+                            <a href="/blog/get_blog?header={{ header }}&page={{ page-1 }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&laquo;</span></a>
+                       {% endif %}
 
-                   {% for page in range(start_page, end_page+1) %}
-                        <a href="/blog/get_blog?header={{ header }}&page={{ page }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">{{ page }}</span></a>
-                   {% endfor %}
+                       {% for i in range(start_page, end_page + 1) %}
+                            <a href="/blog/get_blog?header={{ header }}&page={{ i }}&sidebar={{ sidebar }}">
+                                {% if i == page %}
+                                    <span class="select_page" style="color:#FCFDF8" >
+                                        {{ i }}
+                                    </span>
 
-                   {% if page == end_page and  article_list %}
-                        <a href="/blog/get_blog?header={{ header }}&page={{ end_page }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&raquo;</span></a>
-                   {% endif %}
-                   {% if page != end_page and  article_list %}
-                        <a href="/blog/get_blog?header={{ header }}&page={{ page + 1 }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&raquo;</span></a>
-                   {% endif %}
+                                {% else %}
+                                    <span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">
+                                        {{ i }}
+                                    </span>
+                                {% endif %}
+                            </a>
+                       {% endfor %}
 
+                       {% if page == end_page and  article_list %}
+                            <a href="/blog/get_blog?header={{ header }}&page={{ end_page }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&raquo;</span></a>
+                       {% endif %}
+                       {% if page != end_page and  article_list %}
+                            <a href="/blog/get_blog?header={{ header }}&page={{ page + 1 }}&sidebar={{ sidebar }}"><span class="select_page" style="color:#9d9d9d" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">&raquo;</span></a>
+                       {% endif %}
+                   {% endif %}
 
                 </div>
            </div>
