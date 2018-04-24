@@ -169,23 +169,33 @@ def write_blog():
 @login_required
 @write_required
 def edit_blog(blog_id):
+    from app.util.public_method import PublicMethod
     try:
         form = ArticleForm()
         article = service.get_article(blog_id)
         if article:
-            form.title.data = article.title
-            form.tags.data = article.tags
-            form.introduce.data = article.introduce
-            form.type.data = article.type
-        if form.validate_on_submit() and request.method == 'POST':
-            user = current_user
-            json = service.add_article(request.form, user)
-            if json['status']:
-                return render_template('/blog/edit_blot.html', form=form, json=json, blog_id=article.id)
+            if not form.title.data and not form.introduce.data:
+                form.title.data = article.title
+                form.tags.data = article.tags
+                form.introduce.data = article.introduce
+                form.type.data = article.type
+                form.content.data = article.content
+                return render_template('/blog/edit_blog.html', form=form, json='', blog_id=article.id)
+
+            if form.validate_on_submit() and request.method == 'POST':
+                user = current_user
+                json = service.add_article(request.form, user)
+                if json['status']:
+                    return render_template('/blog/edit_blog.html', form=form, json=json, blog_id=article.id)
+                else:
+                    return render_template('/blog/edit_blog.html', form=form, json=json, blog_id=article.id)
             else:
-                return render_template('/blog/edit_blog.html', form=form, json=json, blog_id=article.id)
+
+                return render_template('/blog/edit_blog.html', form=form,
+                                       json=PublicMethod.false_return(data='', msg=u'数据检验没通过，请检查数据格式'), blog_id=article.id)
         else:
-            return render_template('/blog/edit_blog.html', form=form, json=None, blog_id=article.id)
+            return render_template('/blog/edit_blog.html', form=form,
+                                       json=PublicMethod.false_return(data='', msg=u'该博客不存在'), blog_id=blog_id)
     except Exception:
         traceback.print_exc()
         return redirect('/blog/error')
