@@ -1,0 +1,240 @@
+<style>
+    .select-group{
+        margin-bottom: 20px;
+    }
+</style>
+
+<!-- content header -->
+<section class="content-header">
+    <h1>
+        用户文章管理
+        <small>管理用户文章</small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- 组合下拉框 -->
+    <div class="row select-group">
+        <div class="col-xs-3">
+
+                <label>一级分类：</label>
+                <select id="father" onchange="father_change()">
+                    {% for father in father_list %}
+                        <option value ="{{ father.id }}">{{ father.name }}</option>
+                    {% endfor %}
+                </select>
+        </div>
+
+        <div class="col-xs-3">
+            <label>二级分类：</label>
+            <select id="son" onchange="son_change()"></select>
+        </div>
+        </div>
+
+   <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">文 章</h3>
+                    <div class="box-footer pull-right">
+                             <a href="javascript:void(0);"><sapn style="color:#3C8DBC;" onclick="write_blog()">编写博客</sapn></a>
+                     </div>
+                </div><!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover" id="blog_table">
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>操作</th>
+                        </tr>
+
+
+                        {# 博客头部栏目表格 #}
+                        {% for user in user_list %}
+                        <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editUser" onclick="editUser({{ user.id }}, '{{ user.username }}', '{{ user.password}}')">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteUser" onclick="deleteUser({{ user.id }}, '{{ user.username }}')">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </td>
+                        </tr>
+                        {% endfor %}
+
+
+
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
+</section>
+
+{# 确认删除模态框 #}
+<div id="deleteBlog" class="modal" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4>将要删除的博客</h4>
+			</div>
+			<form action="javascript:void(0)" id="deleteBlogForm"
+				 method="post">
+			<div class="modal-body overflow-visible col-xs-12">
+
+				<div class="col-xs-2"></div>
+				<div class="col-xs-8">
+					<div class="form-group">
+						<label>用户ID：</label><input id="deleteBlogID" name="deleteBlogID"
+							type="text"
+							class="form-control col-xs-4" value="" readonly="readonly"/>
+							<span style="color:red; "></span>
+					</div>
+					<div class="form-group">
+                        <div class="form-group">
+						<label>用户名称：</label> <input id="deleteBlogName" name="deleteBlogName"
+						type="text"
+							class="form-control col-xs-4" value="" readonly="readonly"/>
+							<span style="color:red; "></span>
+					    </div>
+                    </div>
+				</div>
+				<div class="col-xs-2"></div>
+
+
+			</div>
+			<div class="modal-footer">
+
+				<button class="btn btn-sm btn-danger"  id="deleteBlogButton" onclick="sureDelete()">
+					<i class="icon-ok"></i>确认删除
+				</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<script>
+    function delete_blog(id, title){
+        //alert(id+title);
+        $("#deleteBlogID").val(id);
+        $("#deleteBlogName").val(title);
+    }
+    function sureDelete(){
+        blog_id = $("#deleteBlogID").val();
+
+        $.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/user/background/delete_blog",
+		         data : {
+		         	"blog_id" : blog_id,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.msg);
+		         	    $('#deleteBlog').modal('hide');
+		         	    toMain('/user/background/user_blog_manage');
+		         	}else{
+		         	   toastr.error(data.msg);
+		         	   $('#deleteBlog').modal('hide');
+		         	}
+			    },
+		   });
+    }
+    function son_change(){
+        son_id = $("#son option:selected").val();
+        $.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/user/background/get_blog_list",
+		         data : {
+		         	"son_id" : son_id,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.msg);
+		         	    console.log(data.data);
+		         	    $("#blog_table").html("");
+		         	    for(var i=0;i<data.data.length;i++){
+		         	        $("#blog_table").append(
+		         	            "<tr>" +
+                                    "<td>"+data.data[i].id+"</td>"  +
+                                    "<td>"+data.data[i].title+"</td>" +
+                                    "<td>" +
+                                        "<button type=\"button\" class=\"btn btn-primary btn-xs\"  onclick=\"read_blog("+data.data[i].id+")\" style=\"margin-right:5px;\">" +
+                                            "<span class=\"glyphicon glyphicon-search\"></span>" +
+                                        "</button>" +
+
+                                        "<button type=\"button\" class=\"btn btn-primary btn-xs\"  onclick=\"edit_blog("+data.data[i].id+")\" style=\"margin-right:5px;\">" +
+                                            "<span class=\"glyphicon glyphicon-pencil\"></span>" +
+                                        "</button>" +
+
+                                        "<button type=\"button\" class=\"btn btn-danger btn-xs\" data-toggle=\"modal\" data-target=\"#deleteBlog\" onclick=\"delete_blog("+data.data[i].id+", '"+data.data[i].title+"')\" style=\"margin-right:5px;\">" +
+                                            "<span class=\"glyphicon glyphicon-remove\"></span>" +
+                                        "</button>" +
+                                    "</td>" +
+                                "</tr>"
+                            )
+                        }
+		         	}else{
+		         	   toastr.error(data.msg);
+		         	}
+			    },
+
+		 });
+    }
+    function father_change() {
+        // alert($("#father option:selected").val());
+        father_id = $("#father option:selected").val();
+        $.ajax({
+		         type : "post",
+		         dataType: "json",
+		         url : "/user/background/get_son_list",
+		         data : {
+		         	"father_id" : father_id,
+		         },
+		         async : false,  //同步处理
+		         success : function(data, status) { //这里的status是ajax自己的参数，请求成功就success
+
+		         	if(data.status){
+		         	    toastr.success(data.msg);
+		         	    //console.log(data.data);
+		         	    $("#son").find("option").remove();
+		         	    for(var i=0; i<data.data.length; i++){
+		         	        $("#son").append("<option value="+data.data[i].id+" > "+data.data[i].name+" </option>");
+                        }
+		         	}else{
+		         	   toastr.error(data.msg);
+		         	}
+			    },
+
+		 });
+    }
+    function write_blog(){
+        window.open("/blog/write_blog");
+        //window.location.href = "/blog/write_blog"
+    }
+    function read_blog(id){
+        window.open("/blog/read_blog/"+id+"");
+    }
+    function edit_blog(id){
+        window.open("/blog/edit_blog/"+id+" ")
+    }
+
+
+
+
+
+
+</script>
