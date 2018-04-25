@@ -121,10 +121,15 @@
                                 </button>
 
                                 <button type="button" class="btn btn-danger btn-default" onclick="download_content({{ blog_id }})">
-
                                         <span class="glyphicon glyphicon-link" >载入博客内容</span>
-
                                 </button>
+
+                                <button type="button" class="btn btn-danger btn-default">
+                                    <a href="/blog/read_blog/{{ blog_id }}" target="_Blank" style="color:#fff">
+                                        <span class="glyphicon glyphicon-search" >查看博客</span>
+                                    </a>
+                                </button>
+
 
                     </div>
 
@@ -285,7 +290,7 @@
                         required: "请输入博客简介！",
                         minlength: "博客简介不能少于五个字符",
                         maxlength: "博客简介不能大于两百个字符",
-                    },
+                    }
                  },
                  submitHandler:function(form) {
                     form.submit();
