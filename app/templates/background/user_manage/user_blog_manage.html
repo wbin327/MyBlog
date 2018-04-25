@@ -18,7 +18,9 @@
         <div class="col-xs-3">
 
                 <label>一级分类：</label>
+
                 <select id="father" onchange="father_change()">
+                    <option value ="None"></option>
                     {% for father in father_list %}
                         <option value ="{{ father.id }}">{{ father.name }}</option>
                     {% endfor %}
@@ -27,7 +29,9 @@
 
         <div class="col-xs-3">
             <label>二级分类：</label>
-            <select id="son" onchange="son_change()"></select>
+            <select id="son" onchange="son_change()">
+                <option value =""></option>
+            </select>
         </div>
         </div>
 
@@ -49,21 +53,7 @@
                         </tr>
 
 
-                        {# 博客头部栏目表格 #}
-                        {% for user in user_list %}
-                        <tr>
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.username }}</td>
-                                <td>
-                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editUser" onclick="editUser({{ user.id }}, '{{ user.username }}', '{{ user.password}}')">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#deleteUser" onclick="deleteUser({{ user.id }}, '{{ user.username }}')">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button>
-                                </td>
-                        </tr>
-                        {% endfor %}
+
 
 
 
@@ -89,14 +79,14 @@
 				<div class="col-xs-2"></div>
 				<div class="col-xs-8">
 					<div class="form-group">
-						<label>用户ID：</label><input id="deleteBlogID" name="deleteBlogID"
+						<label>博客ID：</label><input id="deleteBlogID" name="deleteBlogID"
 							type="text"
 							class="form-control col-xs-4" value="" readonly="readonly"/>
 							<span style="color:red; "></span>
 					</div>
 					<div class="form-group">
                         <div class="form-group">
-						<label>用户名称：</label> <input id="deleteBlogName" name="deleteBlogName"
+						<label>博客标题：</label> <input id="deleteBlogName" name="deleteBlogName"
 						type="text"
 							class="form-control col-xs-4" value="" readonly="readonly"/>
 							<span style="color:red; "></span>
@@ -211,6 +201,7 @@
 		         	    toastr.success(data.msg);
 		         	    //console.log(data.data);
 		         	    $("#son").find("option").remove();
+		         	    $("#son").append("<option value =\"None\"></option>")
 		         	    for(var i=0; i<data.data.length; i++){
 		         	        $("#son").append("<option value="+data.data[i].id+" > "+data.data[i].name+" </option>");
                         }

@@ -159,8 +159,6 @@ class Service(object):
     def get_blog_list(self, request):
         try:
             son_id = request.values.get('son_id')
-            # 要将字符型转整型，负责sql查询结果为空
-            son_id = int(filter(str.isdigit, son_id.encode("utf-8")))
             if son_id:
                 category = self.dao.get_category_by_id(son_id)
                 blog_list = []
@@ -177,8 +175,8 @@ class Service(object):
     def delete_blog(self, request):
         try:
             blog_id = request.values.get('blog_id')
-            # 要将字符型转整型，负责sql查询结果为空
-            blog_id = int(filter(str.isdigit, blog_id.encode("utf-8")))
+            # 要将字符型转整型，否则sql查询结果为空
+            # blog_id = int(filter(str.isdigit, blog_id.encode("utf-8")))
             if blog_id:
                 article = self.dao.get_article_by_id(blog_id)
                 excute = self.dao.delete_article(article)
