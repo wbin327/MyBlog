@@ -1,7 +1,7 @@
 # encoding=utf-8
 # from .ServiceInterface import ServiceInterface
 import time
-
+from flask import jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app.auth.auth import identify, encode_auth_token
@@ -131,6 +131,65 @@ class Service(object):
             return PublicMethod.true_return(data='', msg='添加用户成功！')
         except Exception:
             return PublicMethod.false_return(data='', msg='后台抛出异常，请查看日志')
+
+    def get_father_by_user(self):
+        try:
+            father_list = self.dao.get_blog_header()
+            return father_list
+        except Exception:
+            traceback.print_exc()
+            return PublicMethod.false_return(data='', msg='后台抛出异常，请查看日志')
+
+    def get_son_list(self, request):
+        try:
+            father_id = request.values.get('father_id')
+            if father_id:
+                category_list = self.dao.get_son_by_father(father_id)
+                son_list = []
+                func = lambda id, name: {'id': id, 'name': name}
+                for category in category_list:
+                    son_list.append(func(category.id, category.name))
+                return jsonify(PublicMethod.true_return(data=son_list, msg='请求成功'))
+            else:
+                return jsonify(PublicMethod.false_return(data='', msg='请求参数有误，请求失败'))
+        except Exception:
+            traceback.print_exc()
+            return jsonify(PublicMethod.false_return(data='', msg='后台报错，请查看日志'))
+
+    def get_blog_list(self, request):
+        try:
+            son_id = request.values.get('son_id')
+            # 要将字符型转整型，负责sql查询结果为空
+            son_id = int(filter(str.isdigit, son_id.encode("utf-8")))
+            if son_id:
+                category = self.dao.get_category_by_id(son_id)
+                blog_list = []
+                func = lambda id, title: {'id': id, 'title': title}
+                for article in category.article:
+                    blog_list.append(func(article.id, article.title))
+                return jsonify(PublicMethod.true_return(data=blog_list, msg='请求成功'))
+            else:
+                return jsonify(PublicMethod.false_return(data='', msg='请求的参数有误，请求失败'))
+        except Exception:
+            traceback.print_exc()
+            return jsonify(PublicMethod.false_return(data='', msg='后台报错，请查看日志'))
+
+    def delete_blog(self, request):
+        try:
+            blog_id = request.values.get('blog_id')
+            # 要将字符型转整型，负责sql查询结果为空
+            blog_id = int(filter(str.isdigit, blog_id.encode("utf-8")))
+            if blog_id:
+                article = self.dao.get_article_by_id(blog_id)
+                excute = self.dao.delete_article(article)
+                if excute:
+                    return jsonify(PublicMethod.true_return(data='', msg='删除成功'))
+                else:
+                    return jsonify(PublicMethod.flase_return(data='', msg='删除失败'))
+        except Exception:
+            traceback.print_exc()
+            return jsonify(PublicMethod.false_return(data='', msg='后台报错，请查看日志'))
+
 
 
 

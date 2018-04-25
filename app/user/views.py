@@ -2,7 +2,7 @@
 from datetime import datetime
 
 from flask import render_template, request, jsonify, session, redirect, flash
-from flask_login import login_required, logout_user
+from flask_login import login_required, logout_user, current_user
 
 from app.util.root_decorators import admin_required
 from service import Service
@@ -107,5 +107,34 @@ def add_user():
 def update_user():
     json = service.update_user(request)
     return jsonify(json)
+
+
+@user.route('/background/user_blog_manage', methods=['get'])
+@login_required
+@admin_required
+def to_blog_manage():
+    father_list = service.get_father_by_user()
+    return render_template('background/user_manage/user_blog_manage.html', father_list=father_list)
+
+
+@user.route('/background/get_son_list', methods=['post'])
+@login_required
+@admin_required
+def get_son_list():
+    return service.get_son_list(request)
+
+
+@user.route('/background/get_blog_list', methods=['post'])
+@login_required
+@admin_required
+def get_blog_list():
+    return service.get_blog_list(request)
+
+
+@user.route('/background/delete_blog', methods=['post'])
+@login_required
+@admin_required
+def delete_blog():
+    return service.delete_blog(request)
 
 
