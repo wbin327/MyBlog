@@ -127,7 +127,7 @@ def login():
     return render_template('/blog/login.html')
 
 
-@blog.route('/login_check')
+@blog.route('/login_check', methods=['post'])
 def login_check():
     username = request.values.get('username')
     password = request.values.get('password')
@@ -136,8 +136,9 @@ def login_check():
         remember = True
     else:
         remember = False
-    result = user_service.background_login_check(username, password, remember=remember, session=session)
-    return jsonify(result)
+    json = user_service.background_login_check(username, password, remember=remember)
+    json['data'] = request.headers.get('Referer')
+    return jsonify(json)
 
 
 @blog.route('/logout')
@@ -184,7 +185,7 @@ def edit_blog(blog_id):
 
             if form.validate_on_submit() and request.method == 'POST':
                 user = current_user
-                json = service.add_article(request.form, user)
+                json = service.update_article(request.form, user, blog_id)
                 if json['status']:
                     return render_template('/blog/edit_blog.html', form=form, json=json, blog_id=article.id)
                 else:

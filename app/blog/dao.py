@@ -47,6 +47,9 @@ class Dao(object):
         db.session.add(article)
         return session_commit()
 
+    def session_commit(self):
+        session_commit()
+
 
 
 def session_commit():

@@ -110,7 +110,7 @@ function remember(){
 		     var remember = $("#keep_online").is(':checked')
 		     $.ajax({
                  type : "post",
-                 url : "/user/background_login_check",
+                 url : "/blog/login_check",
                  dataType: "json",
                  data : {
                      "username" : username,
@@ -119,9 +119,9 @@ function remember(){
                  },
                  async : false,  //同步处理
                  success : function(data, status) {
-                     console.log(data);
+                     //console.log(data);
                      if(data.status){
-                         window.location.href = "/blog/to_write_blog";
+                         window.location.href = data.data;
                      }
                      else{
                          if(data.msg == 'none_user'){
@@ -138,7 +138,7 @@ function remember(){
                      }
                  },
                  error : function(data, status){
-                     console.log(data+"1111");
+                     //console.log(data+"1111");
                      alert("ajax异步请求失败，请联系管理员修复该问题");
                  }
 		     });

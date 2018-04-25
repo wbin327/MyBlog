@@ -9,6 +9,8 @@ import time
 from flask import current_app
 import json
 from flask import render_template, redirect
+from app.models.article import Article
+from datetime import datetime
 
 
 class Service(object):
@@ -193,7 +195,6 @@ class Service(object):
 
     def add_article(self, form, user):
         try:
-            from app.models.article import Article
             article = Article(form=form)
             article.user_id = user.id
             article.read_count = 0
@@ -202,6 +203,30 @@ class Service(object):
             self.dao.add_article(article)
             return PublicMethod.true_return(data='', msg=u'发布成功')
         except Exception,e:
+            traceback.print_exc()
+            return PublicMethod.false_return(data='', msg=u'后台报错，请联系管理员')
+
+    def update_article(self, form, user, blog_id):
+        try:
+            old_article = self.dao.get_article_by_id(blog_id)
+            old_article.user_id = user.id
+            category = self.dao.getCategoryById(form['category'])
+            old_article.category = [category]
+            old_article.title = form['title']
+            old_article.content = form['content']
+            old_article.type = form['type']
+            old_article.tags = form['tags']
+            old_article.introduce = form['introduce']
+            old_article.update_time = datetime.now()
+            if str(form['type']) == str(1):
+                old_article.type = '原创'
+            elif str(form['type']) == str(2):
+                old_article.type = '转载'
+            else:
+                old_article.type = '翻译'
+            self.dao.session_commit()
+            return PublicMethod.true_return(data='', msg=u'博客更新成功')
+        except Exception, e:
             traceback.print_exc()
             return PublicMethod.false_return(data='', msg=u'后台报错，请联系管理员')
 
