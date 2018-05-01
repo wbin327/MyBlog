@@ -7,6 +7,7 @@ from flask_login import login_required, logout_user, current_user
 from ArticleForm import ArticleForm
 import traceback
 from ..user.service import Service as UserService
+import re
 
 service = Service()
 user_service = UserService()
@@ -124,7 +125,10 @@ def to_write_blog():
 
 @blog.route('/login')
 def login():
-    return render_template('/blog/login.html')
+    if current_user.is_authenticated:
+        return redirect('/blog/index')
+    else:
+        return render_template('/blog/login.html')
 
 
 @blog.route('/login_check', methods=['post'])
@@ -137,6 +141,7 @@ def login_check():
     else:
         remember = False
     json = user_service.background_login_check(username, password, remember=remember)
+    # print request.headers.get('Referer')
     json['data'] = request.headers.get('Referer')
     return jsonify(json)
 
