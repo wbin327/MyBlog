@@ -7,7 +7,7 @@ from app.models.blog_category import Category
 
 
 class ArticleForm(FlaskForm):
-    title = StringField(u"title", validators=[DataRequired(u'标题必填'), Length(min=2, max=20, message=u'标题必须介于2-20个字符')])
+    title = StringField(u"title", validators=[DataRequired(u'标题必填'), Length(min=2, max=100, message=u'标题必须介于2-100个字符')])
     category = SelectField(u"category", coerce=int)
     tags = StringField(u"tag", validators=[DataRequired(u'标签必填'),  Length(min=2, max=25, message=u'标签必须介于2-25个字符')])
     content = PageDownField(u"content")
