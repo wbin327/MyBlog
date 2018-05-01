@@ -9,7 +9,7 @@ class Article(db.Model):
     '__tablename__' == 'article'
     id = db.Column(db.Integer, primary_key=True)
     # 标题
-    title = db.Column(db.String(30))
+    title = db.Column(db.String(110))
     # 正文
     content = db.Column(db.Text)
     # 类型（原创/转载/翻译)
