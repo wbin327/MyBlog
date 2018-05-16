@@ -30,6 +30,9 @@ class Dao(object):
     def get_all_category(self):
         return Category.query.all()
 
+    def get_article_orderby_time(self, blog_id, startnum, endnum):
+        return Article.query.filter_by(id=blog_id).order_by(Article.publish_time)[startnum: endnum]
+
     def getCategoryByName(self, name):
         return Category.query.filter_by(name=name).first()
 

@@ -247,11 +247,10 @@ class Service(object):
             for son in son_list:
                 for article in son.article:
                     article_list.append(article)
-            if not article_list:
+            if article_list:
                 # 根据时间顺序排序, reverse=True升序排序，key根据关键字进行排序
-                article_list.sort(key=lambda blog: blog.update_time, reverse=True)
-            # 不知什么原因列表未能升序排序，这里将其反转
-            article_list.reverse()
+                article_list.sort(key=lambda article: article.publish_time, reverse=True)
+            # 列表反转可以使用：article_list.reverse()
             start = (page-1)*5
             return article_list[start:start+5]
         except Exception:
@@ -290,12 +289,12 @@ class Service(object):
                 page = int(filter(str.isdigit, page.encode("utf-8")))
             if header and not sidebar:
                 father_list, son_list = self.get_father_and_son(header)
-                article_list = self.get_blog_by_header(son_list, page=page)
+                article_list = self.get_blog_by_header(son_list, page)
                 start_page, end_page = self.page_count(header=header)
                 return render_template('/blog/content.html', father_list=father_list, son_list=son_list,
                                        start_page=start_page, end_page=end_page, article_list=article_list,
                                        header=header, page=int(page))
-            elif header and sidebar:
+            if header and sidebar:
                 father_list, son_list = self.get_father_and_son(header)
                 sidebar_obj = None
                 for son in son_list:
@@ -309,6 +308,7 @@ class Service(object):
                 return render_template('/blog/content.html', father_list=father_list, son_list=son_list,
                                        start_page=1, end_page=page_count, article_list=article_list,
                                        header=header, page=int(page), sidebar=sidebar)
+
         except Exception:
             traceback.print_exc()
             return redirect('/blog/error')
