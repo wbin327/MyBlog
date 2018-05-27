@@ -1,0 +1,176 @@
+.main-wrapper{
+    background: url("/static/images/index_2.0_background.jpg");
+    background-repeat: no-repeat;    /* 关闭图片重复 */
+    -webkit-background-size: cover;  /*保持图像本身的宽高比例,将图片缩放到正好完全覆盖定义背景的区域 */
+    background-size: cover;
+    background-attachment: fixed;    /* 固定背景图片 */
+    background-position: center center; /* 定位图片，第一个是x,第二个是y */
+}
+
+header{
+    background: rgba(0,0,0,0.2);
+    height: 33.86rem;
+}
+header nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 0;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.logo{
+    display: none;
+}
+
+header nav .right-group{
+    display:none;
+}
+#sidebar_trigger{
+    display: inline-block;
+}
+header #sidebar_trigger{
+    position: absolute;
+    left:0.8rem;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.inner{
+    color: #ffffff;
+    position: absolute;
+    top:12.7rem;
+    width: 100%;
+}
+.inner p{
+    text-align: center;
+    margin: auto;
+    max-width: 15rem;
+    line-height: 1.52rem;
+}
+.inner h2{
+    margin: 0;
+    font-size: 1rem;
+    text-align: center;
+    margin: 1rem auto;
+}
+
+.more{
+    color: #ffffff;
+    width:100%;
+    position: absolute;
+    bottom: 2.5rem;
+}
+.more p{
+    max-width: 15rem;
+    margin: 0.51rem auto;
+    text-align: center;
+}
+.more i{
+    display: block;
+    max-width: 15rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+footer{
+    background: #252A36;
+    height: 100%;
+    font-size: 0.7rem;
+}
+footer .gray-wrapper{
+    text-align: left;
+    margin:0 auto;
+}
+footer i{
+    color: #9d9d9d;;
+}
+footer p{
+    color: #9d9d9d;
+    display: inline-block;
+    margin: 0 auto;
+}
+footer a{
+    text-decoration: none;
+    color: #9d9d9d;
+}
+
+.sidebar{
+    position: fixed;
+    right: -16rem;
+    top: 0;
+    bottom:0;
+    width: 15.7rem;
+    background: #1b1e24;
+    border-radius:0.5rem;
+}
+.sidebar ul{
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    font-size: 1.5rem;
+    margin: 0;
+}
+.sidebar ul .hr{
+    width: inherit;
+    height: 0.05rem;
+    background: rgba(255,255,255,0.1);
+
+}
+.sidebar ul li{
+    width: 100%;
+    height: 2.8rem;
+    padding-left: 1rem;
+    line-height: 2.8rem;
+}
+.sidebar ul li i{
+    vertical-align: middle;    /* 将此元素放在父元素的中部 */
+    color: rgba(255,255,255,0.5);
+
+}
+.sidebar a{
+    vertical-align: middle;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+    height: inherit;
+    text-decoration: none;
+    display: inline-block;
+}
+.sidebar .sidebar-header{
+    height: 12.66rem;
+    width: 100%;
+}
+.sidebar .sidebar-header .head-portrait{
+    position: absolute;
+    top:1.67rem;
+    left: 4.31rem;
+    width: 7.09rem;
+    height: 7.09rem;
+    border-radius: 50%;
+    background: url("/static/images/header-portrait.jpg");
+     -webkit-background-size: cover;  /*保持图像本身的宽高比例,将图片缩放到正好完全覆盖定义背景的区域 */
+    background-size: cover;
+    border:0.355rem solid #333945;
+    box-sizing: border-box;         /* css3新增属性，盒子最后的大小就是规定的大小，border,padding等属性都会在规定好的大小内进行，从而不会增大盒子的大小 */
+}
+.sidebar .sidebar-header p{
+    margin: 20px auto;
+    text-align: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 20px;
+    position: relative;
+    top: 170px;
+}
+
+.mask{
+    display: none;
+    background: rgba(0,0,0,0.3);
+    position:fixed;
+    top: 0;
+    bottom:0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
