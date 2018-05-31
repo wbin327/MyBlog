@@ -1,6 +1,7 @@
 ;$(function () {
 
     $('#sidebar_trigger').on('click',function () {
+        $('aside').show();
         $('#header').hide();
         $('.mask').fadeIn();
         $('#sidebar').animate({right:0});

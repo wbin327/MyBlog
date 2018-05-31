@@ -48,9 +48,17 @@ img{
     float:right;
     line-height: 63px;
 }
+
 h2{
     display: inline-block;
 }
+#sidebar_trigger{
+    display: none;
+}
+aside{
+    display: none;
+}
+
 @media screen and (max-width: 768px){
 
     #publish-time{

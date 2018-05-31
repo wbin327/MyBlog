@@ -101,6 +101,12 @@ i{
 #header-toggle{
     display: none;
 }
+#sidebar_trigger{
+    display: none;
+}
+aside{
+    display: none;
+}
 
 @media screen and (max-width: 768px){
     body{
@@ -210,6 +216,7 @@ i{
         bottom: 0;
         width: 100%;
     }
+    
 
 }
 
