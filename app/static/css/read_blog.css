@@ -58,6 +58,11 @@ h2{
 aside{
     display: none;
 }
+.read_count{
+    display: inline-block;
+    color:#bbb;
+    
+}
 
 @media screen and (max-width: 768px){
 
