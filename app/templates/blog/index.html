@@ -31,7 +31,7 @@
                 {% endfor %}
 
                 {% if current_user.is_authenticated %}
-                    <li><a href="" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">编写博客</a></li>
+                    <li><a href="/blog/to_write_blog" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">编写博客</a></li>
                     <li><a href="/blog/logour" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)">退出登录</a> </li>
                 {% else %}
                     <li><a href="/blog/login" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)"> 登录</a> </li>

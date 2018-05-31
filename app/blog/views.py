@@ -7,7 +7,6 @@ from flask_login import login_required, logout_user, current_user
 from ArticleForm import ArticleForm
 import traceback
 from ..user.service import Service as UserService
-import re
 
 service = Service()
 user_service = UserService()
@@ -101,18 +100,12 @@ def blog_index():
 
 
 @blog.route('/get_blog')
-def get_blog_by_category():
+def get_blog():
     # 获取url, ?后的值
     header = request.args.get('header')
     page = request.args.get('page')
     sidebar = request.args.get('sidebar')
     return service.get_blog_by_header_and_sidebar(header=header, page=page, sidebar=sidebar)
-
-
-def get_blog_by_sidebar():
-    sidebar_id = request.values.get('sidebar_id')
-    data = service.get_blog_by_sidebar(sidebar_id)
-    return jsonify(data)
 
 
 @blog.route('/to_write_blog')
@@ -234,4 +227,9 @@ def read_blog(blog_id):
 @blog.route('/error', methods=['get'])
 def blog_error():
     return render_template('/blog/blog_error.html')
+
+
+@blog.route('/search_blog', methods=['post'])
+def search_blog():
+    return service.search_blog(request)
 

@@ -1,0 +1,215 @@
+
+.header{
+    background-color:#C62F2F;
+}
+
+body{
+    heigth:100%;
+    background-color:#F4F4F4;
+}
+a{
+    text-decoration: none;
+}
+h4{
+    margin-top:0px;
+    margin-bottom:0px;
+    padding-top:10px;
+    padding-left:10px;
+}
+hr{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-style: dotted;
+    border-bottom-color: black;
+}
+i{
+    margin-right:5px ;
+}
+
+
+.middle{
+    margin-top:80px;
+    margin-bottom:80px;
+}
+
+.left_sidebar{
+    background-color: #fff;
+    margin-bottom: 20px;
+}
+.left_sidebar li a{
+    color: #000;
+    text-decoration: none;
+}
+
+#blog_list{
+    background: #fff;
+    padding: 10px;
+}
+#blog_list .blog_list_header{
+    height: 40px;
+}
+#blog_list .blog_list_header h5, #blog_list form{
+    display: inline-block;
+
+}
+#blog_list .blog_list_header form{
+    float: right;
+}
+#blog_list .related_blog{
+    width:100%;
+}
+#blog_list .related_blog a{
+    color:#4f4f4f;
+    text-decoration: none;
+}
+#blog_list .first_line{
+    height: 40px;
+    line-height: 40px;
+}
+#blog_list .first_line .title{
+    float: left;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#blog_list .second_line{
+    width: 100%;
+    height:40px;
+    line-height: 40px;
+    color: #9d9d9d;
+}
+
+#blog_list .second_line .type{
+    float: left;
+    margin-right: 20px;
+}
+#blog_list .second_line .read_count{
+    display: inline-block;
+}
+#blog_list .second_line .update_time{
+    float: right;
+}
+
+.page{
+    font-size: 18px;
+     text-align: right;
+}
+
+.navbar{
+    margin: 0;
+}
+#header-toggle{
+    display: none;
+}
+
+@media screen and (max-width: 768px){
+    body{
+        background: #fff;
+    }
+    #sidebar_trigger{
+        display:inline-block;
+        font-size: 20px;
+        color: #9d9d9d;
+        float: right;
+        line-height: 50px;
+    }
+    .header ul{
+        display: none;
+    }
+    .middle{
+        margin:50px 0;
+    }
+    .middle ul{
+        display: none;
+    }
+    header .col-xs-12{
+        padding: 0;
+    }
+    header .navbar-brand{
+        padding: 15px 0;
+    }
+    #blog_list{
+        padding: 15px;
+    }
+
+    .sidebar{
+        position: fixed;
+        right: -16rem;
+        top: 0;
+        bottom:0;
+        width: 15.7rem;
+        background: #1b1e24;
+        border-radius:0.5rem;
+    }
+    .sidebar ul{
+        list-style: none;
+        padding: 0;
+        width: 100%;
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    .sidebar ul .hr{
+        width: inherit;
+        height: 0.05rem;
+        background: rgba(255,255,255,0.1);
+
+    }
+    .sidebar ul li{
+        width: 100%;
+        height: 2.8rem;
+        padding-left: 1rem;
+        line-height: 2.8rem;
+    }
+    .sidebar ul li i{
+        vertical-align: middle;    /* 将此元素放在父元素的中部 */
+        color: rgba(255,255,255,0.5);
+
+    }
+    .sidebar a{
+        vertical-align: middle;
+        font-size: 0.7rem;
+        color: rgba(255,255,255,0.5);
+        height: inherit;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .sidebar .sidebar-header{
+        height: 12.66rem;
+        width: 100%;
+    }
+    .sidebar .sidebar-header .head-portrait{
+        position: absolute;
+        top:1.67rem;
+        left: 4.31rem;
+        width: 7.09rem;
+        height: 7.09rem;
+        border-radius: 50%;
+        background: url("/static/images/header-portrait.jpg");
+         -webkit-background-size: cover;  /*保持图像本身的宽高比例,将图片缩放到正好完全覆盖定义背景的区域 */
+        background-size: cover;
+        border:0.355rem solid #333945;
+        box-sizing: border-box;         /* css3新增属性，盒子最后的大小就是规定的大小，border,padding等属性都会在规定好的大小内进行，从而不会增大盒子的大小 */
+    }
+    .sidebar .sidebar-header p{
+        margin: 20px auto;
+        text-align: center;
+        width: 100%;
+        color: #ffffff;
+        font-size: 20px;
+        position: relative;
+        top: 170px;
+    }
+
+    .mask{
+        display: none;
+        background: rgba(0,0,0,0.3);
+        position:fixed;
+        top: 0;
+        bottom:0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+    }
+
+}
+

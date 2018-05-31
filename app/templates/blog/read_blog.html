@@ -4,108 +4,41 @@
     <meta charset="UTF-8">
     <title>{{ article.title }}</title>
     <link href="/static/bootstrap-3.3.7-dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
-
-    <style>
-        .header{
-            background-color:#C62F2F;
-            color: #FAFAFA;
-        }
-        .content{
-            width:100%;
-            height:1000px;
-            background-size:cover;
-            background-color: #3C3F41;
-        }
-
-        body{
-            heigth:100%;
-            background-color:#F5F6F7;
-        }
-
-        .footer{
-            width: 100%;
-            padding: 15px 0;
-            text-align: center;
-            position:fixed;
-            left:0px;
-            bottom:0px;
-            color: black;
-            background-color: #FFFFFF;
-            border-top:1px solid #E1E1E2;
-        }
-
-        .middle{
-            // background-color:#FAFAFA;
-            margin-top:80px;
-            margin-bottom:80px;
-
-        }
-        .sidebar{
-            border-bottom:1px solid #E1E1E2;
-        }
-        .blog_box{
-            //overflow:hidden;
-            background-color: #FFFFFF;
-            border:1px solid #E1E1E2;
-            width:auto;
-            height:auto;
-            padding-right: 20px;
-            padding-left: 20px;
-            padding-bottom: 20px;
-        }
-        .type_box{
-            width: 50px;
-            height: 25px;
-            border:1px solid #E1E1E2;
-            float: left;
-            margin-right: 20px;
-        }
-
-        img{
-            width: 100%;
-            height: auto;
-        }
-
-        .blog_title{
-            margin-bottom: 20px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/static/font-awesome-4.7.0/css/font-awesome.min.css">
+    <script src="/static/js/flexible.js"></script>
+    <link rel="stylesheet" href="/static/css/read_blog.css">
 
 </head>
 
     <!-- header -->
-    <div class="row">
-        <div class="navbar navbar-inverse navbar-fixed-top header">
+    <header id="header">
+        <div class="row">
+            <div class="navbar navbar-inverse navbar-fixed-top header">
+                <div class="container">
+                    <div class="col-lg-12 col-xs-12">
 
-            <div class="container">
+                        <div>
+                                <a class="navbar-brand" href="/blog/index">wbin的博客</a>
+                                <i id="sidebar_trigger" class="fa fa-list" aria-hidden="true"></i>
+                                <ul class="nav navbar-nav navbar-right">
+                                    {% for header in father_list %}
+                                        <li ><a  href="/blog/get_blog?header={{ header.name }}">{{ header.name }}</a>  </li>
+                                    {% endfor %}
 
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="/blog/index"><span style="color:#FAFAFA">wbin的博客</span></a>
+                                    {% if current_user.is_authenticated %}
+                                        <li><a href="/blog/to_write_blog">编写博客</a></li>
+                                        <li><a href="/blog/logout">退出登录</a></li>
+                                    {% else %}
+                                        <li><a href="/blog/login">登录</a></li>
+                                    {% endif %}
+                                </ul>
+
+                        </div>
                     </div>
-
-                    <div>
-                        <ul class="nav navbar-nav navbar-right">
-
-                            {% for header in father_list %}
-                                <li ><a  href="/blog/get_blog?header={{ header.name }}">{{ header.name }}</a>  </li>
-                            {% endfor %}
-
-                            <li><a href="/blog/to_write_blog"><span>编写博客</span></a></li>
-                            {% if current_user.is_authenticated %}
-                            <li><a href="/blog/logout"><span>退出登录</span></a></li>
-                            {% else %}
-                            <li><a href="/blog/login"><span>登录</span></a></li>
-                            {% endif %}
-
-                        </ul>
-                    </div>
-
-
-
+                </div>
             </div>
         </div>
-    </div>
+    </header>
 
 
     <!-- middle -->
@@ -118,15 +51,14 @@
 
 
 
-           <div class="col-lg-10 col-xs-9" id="blog_box">
+           <div class="col-lg-10 col-xs-12" id="blog_box">
                <div class="blog_box">
 
                    <div class="blog_title">
 
                        <h2>{{ article.title }}</h2>
-                       <a  href="/blog/edit_blog/{{ article.id }}" >
-                           <span style="color:#bbb;font-size:15px;position:absolute;right:30px;top:20px;"
-                           onmousemove="mouseIn(this)" onmouseout="mouseOut2(this)">编辑博客</span>
+                       <a id="update-blog" href="/blog/edit_blog/{{ article.id }}" >
+                           <span onmousemove="mouseIn(this)" onmouseout="mouseOut2(this)">编辑博客</span>
                        </a>
 
                    </div>
@@ -134,8 +66,8 @@
                    <div class="type_box" align="center">
                        <span>{{ article.type }}</span>
                    </div>
-                   <span style="color:#bbb;margin-right:20px;">{{ article.publish_time }}</span>
-                   <span style="color:#bbb">标签：{{ article.tags }}</span>
+                   <span id='publish-time' style="color:#bbb;margin-right:20px;">{{ article.publish_time }}</span>
+                   <span id='tags' style="color:#bbb">标签：{{ article.tags }}</span>
 
                    <div class="read_count" style="float:right;color:#bbb;">
                        <span class="glyphicon glyphicon-eye-open"  ></span>
@@ -156,36 +88,49 @@
         </div>
     </div>
 
+    <!-- 侧边栏 -->
+    <div class="mask"></div>
 
-
-
-    <!-- footer -->
-    <div class="footer">
-        <div class="container">
-                <a href="javascript:void(0);"><span class="glyphicon glyphicon-envelope" id="call_me" style="color:#5C5C5C" onmousemove="mouseIn(this)" onmouseout="mouseOut(this)"> 联系我：wbin327@foxmail.com</span></a>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="head-portrait"></div>
+            <p>wbin的博客</p>
         </div>
-    </div>
+        <ul id="sidebar-ul">
+            {% for header in father_list %}
+                <div class="hr"></div>
+                <li>
+                    <i class="fa fa-external-link"></i>
+                    <a href="/blog/get_blog?header={{ header.name }}">{{ header.name }}</a>
+                </li>
+            {% endfor %}
+
+            {% if current_user.is_authenticated %}
+                <div class="hr"></div>
+                <li>
+                    <i class="fa fa-pencil"></i>
+                    <a href="/blog/to_write_blog">编写博客</a>
+                </li>
+                <div class="hr"></div>
+                <li>
+                    <i class="fa fa-sign-out"></i>
+                    <a href="/blog/logout">退出登录</a>
+                </li>
+            {% else %}
+
+                <div class="hr"></div>
+                <li>
+                    <i class="fa fa-sign-in"></i>
+                    <a href="/blog/login">登录</a>
+                </li>
+            {% endif %}
+        </ul>
+    </aside>
 
 
 
-    <script src="/static/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
     <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
-
-<script>
-
-    function mouseIn(obj){
-        var test = obj;
-        $(test).css("color", "#333333");
-    }
-    function mouseOut(obj){
-        var test = obj;
-        $(test).css("color", "#5C5C5C");
-    }
-    function mouseOut2(obj){
-        var test = obj;
-        $(test).css("color", "#bbb");
-    }
-
-</script>
+    <script src="/static/js/read_blog.js"></script>
 </body>
 </html>

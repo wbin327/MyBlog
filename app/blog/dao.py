@@ -53,6 +53,10 @@ class Dao(object):
     def session_commit(self):
         session_commit()
 
+    def search_blog(self, condition):
+
+        return Article.query.filter(Article.title.like('%'+condition+'%')).all()
+
 
 
 def session_commit():

@@ -1,0 +1,187 @@
+.header{
+    background-color:#C62F2F;
+    color: #FAFAFA;
+}
+
+body{
+    heigth:100%;
+    background-color:#F5F6F7;
+}
+
+.middle{
+    // background-color:#FAFAFA;
+    margin-top:80px;
+    margin-bottom:80px;
+
+}
+
+.blog_box{
+    //overflow:hidden;
+    background-color: #FFFFFF;
+    border:1px solid #E1E1E2;
+    width:auto;
+    height:auto;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+.type_box{
+    width: 50px;
+    height: 25px;
+    border:1px solid #E1E1E2;
+    margin-right: 20px;
+    display: inline-block;
+}
+
+img{
+    width: 100%;
+    height: auto;
+}
+
+.blog_title{
+    margin-bottom: 20px;
+}
+
+#update-blog span{
+    color:#bbb;
+    font-size:15px;
+    float:right;
+    line-height: 63px;
+}
+h2{
+    display: inline-block;
+}
+@media screen and (max-width: 768px){
+
+    #publish-time{
+        display: none;
+    }
+    #tags{
+        display: none;
+    }
+    h1{
+        font-size: 25px;
+        font-weight: 800;
+    }
+    h2{
+        font-size: 20px;
+        font-weight: 700;
+        display: inline-block;
+    }
+    h3{
+        font-size: 18px;
+        font-weight: 600;
+    }
+    h4{
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .blog_box{
+        padding: 0;
+        border: none;
+        margin-top: 70px;
+    }
+    .middle{
+        margin: 0;
+    }
+    body{
+        background: #fff;
+    }
+    header .col-xs-12{
+        padding: 0;
+    }
+    header .navbar-brand{
+        padding: 15px 0;
+    }
+
+    header ul{
+        display: none;
+    }
+    header #sidebar_trigger{
+        display:inline-block;
+        font-size: 20px;
+        color: #9d9d9d;
+        float: right;
+        line-height: 50px;
+    }
+
+    .sidebar{
+        position: fixed;
+        right: -16rem;
+        top: 0;
+        bottom:0;
+        width: 15.7rem;
+        background: #1b1e24;
+        border-radius:0.5rem;
+    }
+    .sidebar ul{
+        list-style: none;
+        padding: 0;
+        width: 100%;
+        font-size: 1.5rem;
+        margin: 0;
+    }
+    .sidebar ul .hr{
+        width: inherit;
+        height: 0.05rem;
+        background: rgba(255,255,255,0.1);
+
+    }
+    .sidebar ul li{
+        width: 100%;
+        height: 2.8rem;
+        padding-left: 1rem;
+        line-height: 2.8rem;
+    }
+    .sidebar ul li i{
+        vertical-align: middle;    /* 将此元素放在父元素的中部 */
+        color: rgba(255,255,255,0.5);
+
+    }
+    .sidebar a{
+        vertical-align: middle;
+        font-size: 0.7rem;
+        color: rgba(255,255,255,0.5);
+        height: inherit;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .sidebar .sidebar-header{
+        height: 12.66rem;
+        width: 100%;
+    }
+    .sidebar .sidebar-header .head-portrait{
+        position: absolute;
+        top:1.67rem;
+        left: 4.31rem;
+        width: 7.09rem;
+        height: 7.09rem;
+        border-radius: 50%;
+        background: url("/static/images/header-portrait.jpg");
+         -webkit-background-size: cover;  /*保持图像本身的宽高比例,将图片缩放到正好完全覆盖定义背景的区域 */
+        background-size: cover;
+        border:0.355rem solid #333945;
+        box-sizing: border-box;         /* css3新增属性，盒子最后的大小就是规定的大小，border,padding等属性都会在规定好的大小内进行，从而不会增大盒子的大小 */
+    }
+    .sidebar .sidebar-header p{
+        margin: 20px auto;
+        text-align: center;
+        width: 100%;
+        color: #ffffff;
+        font-size: 20px;
+        position: relative;
+        top: 170px;
+    }
+
+    .mask{
+        display: none;
+        background: rgba(0,0,0,0.3);
+        position:fixed;
+        top: 0;
+        bottom:0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+    }
+
+}

@@ -7,10 +7,10 @@ import os
 from werkzeug.utils import secure_filename
 import time
 from flask import current_app
-import json
-from flask import render_template, redirect
+from flask import render_template, redirect, jsonify
 from app.models.article import Article
 from datetime import datetime
+import bleach
 
 
 class Service(object):
@@ -234,6 +234,13 @@ class Service(object):
         # 这里需要注意的是windows系统里的文件后缀可能是大写或小写，需要先将其统一转化成小写再进行判断
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
+    def sort_by_time_desc(self, article_list, page):
+        article_list.sort(key=lambda blog: blog.update_time, reverse=True)
+        # 列表反转
+        # article_list.reverse()
+        start = (page-1)*10
+        return article_list[start:start+10]
+
     def get_blog_by_header(self, son_list, page):
         """
         获取一级类别的所有博客
@@ -248,11 +255,9 @@ class Service(object):
                 for article in son.article:
                     article_list.append(article)
             if article_list:
-                # 根据时间顺序排序, reverse=True升序排序，key根据关键字进行排序
-                article_list.sort(key=lambda article: article.publish_time, reverse=True)
-            # 列表反转可以使用：article_list.reverse()
-            start = (page-1)*5
-            return article_list[start:start+5]
+                return self.sort_by_time_desc(article_list, page)
+            else:
+                return []
         except Exception:
             traceback.print_exc()
 
@@ -264,19 +269,12 @@ class Service(object):
             for son in son_list:
                 article_list = article_list + son.article
             article_count = len(article_list)
-            page_count = article_count/5
-            if not article_count % 5 == 0:
+            page_count = article_count/10
+            if not article_count % 10 == 0:
                 page_count += 1
             return 1, page_count
         except Exception:
             traceback.print_exc()
-
-    def get_blog_by_sidebar(self, sidebar_obj, page):
-        sidebar_obj.article.sort(key=lambda blog: blog.update_time)
-        # 列表反转
-        sidebar_obj.article.reverse()
-        start = (page-1)*5
-        return sidebar_obj.article[start:start+5]
 
     def get_blog_by_header_and_sidebar(self, header, sidebar, page):
         try:
@@ -300,10 +298,10 @@ class Service(object):
                 for son in son_list:
                     if son.name == sidebar:
                         sidebar_obj = son
-                article_list = self.get_blog_by_sidebar(sidebar_obj, page=page)
+                article_list = self.sort_by_time_desc(sidebar_obj.article, page=page)
                 article_count = len(sidebar_obj.article)
-                page_count = article_count / 5
-                if not article_count % 5 == 0:
+                page_count = article_count / 10
+                if not article_count % 10 == 0:
                     page_count += 1
                 return render_template('/blog/content.html', father_list=father_list, son_list=son_list,
                                        start_page=1, end_page=page_count, article_list=article_list,
@@ -345,3 +343,15 @@ class Service(object):
         except Exception:
             traceback.print_exc()
             return PublicMethod.false_return(data='', msg='后台抛出异常，请查看后台日志')
+
+    def search_blog(self, request):
+        try:
+            condition = request.values.get('condition')
+            # 清除html标签，防止用户恶意输入
+            bleach.clean(condition)
+            article_list = self.dao.search_blog(condition)
+            article_list = [article.serialize() for article in article_list]
+            return jsonify(PublicMethod.true_return(data=article_list, msg='请求成功！'))
+        except Exception:
+            traceback.print_exc()
+            return jsonify(PublicMethod.false_return(data='', msg='请求失败，具体原因请查看后台日志文件！'))

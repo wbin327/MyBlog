@@ -75,8 +75,10 @@ class Article(db.Model):
             "title": self.title,
             "type": self.type,
             "introduce": self.introduce,
-            "publish_time": self.update_time.strftime("%Y-%m-%d %H:%M:%S"),
+            "publish_time": self.publish_time.strftime("%Y-%m-%d %H:%M:%S"),
             "tags": self.tags,
+            "update_time": self.update_time.strftime("%Y-%m-%d %H:%M:%S"),
+            "read_count": self.read_count
         }
         # vars(obj),返回对象实例的所有属性的字典
         return d
